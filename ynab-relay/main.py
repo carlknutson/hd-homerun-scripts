@@ -53,13 +53,12 @@ def get_accounts():
 def get_payees():
     payees = []
 
-    budgets = requests.get(url=f'{ynab_api_url}/budgets', headers={'Authorization': f'Bearer {ynab_token}'}).json()['data']['budgets']
+    budgets = requests.get(url=f'{ynab_api_url}/budgets', headers={'Authorization': f'Bearer {ynab_token}'}).json()['data']['budgets']    
     for budget in budgets:
         if budget['name'] == ynab_budget_name:
             response = requests.get(url=f'{ynab_api_url}/budgets/{budget["id"]}/payees', headers={'Authorization': f'Bearer {ynab_token}'}).json()['data']['payees']
-    
+
             for payee in response:
-                print(payee)
                 if not (payee['deleted'] or payee['transfer_account_id']):
                     payees.append(payee['name'])
             print(payees)
