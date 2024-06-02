@@ -26,7 +26,7 @@ def add_transaction(account_name, payee, amount):
         'transaction': {
             'account_id': account_id,
             'date': f'{datetime.now().year}-{datetime.now().month}-{datetime.now().day}',
-            'amount': float(amount) * 1000,
+            'amount': int(float(amount) * 1000),
             'payee_name': payee,
             'cleared': 'uncleared',
             'approved': False,
@@ -35,6 +35,9 @@ def add_transaction(account_name, payee, amount):
 
     response = requests.post(url=f'{ynab_api_url}/budgets/{budget_id}/transactions', json=transaction, headers={'Authorization': f'Bearer {ynab_token}'})
     response.raise_for_status
+
+    print(transaction)
+    print(response)
 
 def get_accounts():
     accounts = []
