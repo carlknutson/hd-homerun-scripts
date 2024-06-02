@@ -39,6 +39,12 @@ def delete_recording(title):
     print(f'Deleted {deleted_count} recording(s) of {title}.')
 
 def get_storage_details():
+    info = get_capacity_info()
+
+    print(f'Storage is {info["percentage_used"]}% used')
+    print(f'Free storage remaining: {info["free_space"]}')
+
+def get_capacity_info():
     dvr_info = requests.get(f'http://{url}/discover.json').json()
 
     total_space = dvr_info['TotalSpace']
@@ -46,8 +52,10 @@ def get_storage_details():
 
     used_space = total_space - free_space
 
-    print(f'Storage is {round(used_space / total_space * 100, 2)}% used')
-    print(f'Free storage remaining: {convert_size(free_space)}')
+    return {
+        'free_space': convert_size(free_space),
+        'percentage_used': round(used_space / total_space * 100, 2)
+    }
 
 # https://stackoverflow.com/questions/5194057/better-way-to-convert-file-sizes-in-python
 def convert_size(size_bytes):
@@ -75,6 +83,8 @@ def main():
             print(f'Action: {action}, requires a recording name input.')
     elif action == 'get_storage_details':
         get_storage_details()
+    elif action == 'get_capacity_info':
+        print(get_capacity_info())
     else:
         print(f'Action: {action}, is not implemented.')
 
