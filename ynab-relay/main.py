@@ -26,7 +26,7 @@ def add_transaction(account_name, payee, amount):
         'transaction': {
             'account_id': account_id,
             'date': f'{datetime.now().year}-{datetime.now().month}-{datetime.now().day}',
-            'amount': int(float(amount) * 1000),
+            'amount': -abs(int(float(amount) * 1000)),
             'payee_name': payee,
             'cleared': 'uncleared',
             'approved': False,
